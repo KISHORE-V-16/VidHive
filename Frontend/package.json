@@ -24,6 +24,7 @@
     "classnames": "^2.5.1",
     "face-api.js": "^0.22.2",
     "firebase": "^10.7.1",
+    "lucide-react": "^0.509.0",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-babylonjs": "^3.2.2",

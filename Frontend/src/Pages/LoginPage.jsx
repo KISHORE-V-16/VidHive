@@ -375,8 +375,6 @@ const LoginContainer = styled.div`
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
-        margin-top: 0.5rem;
-        
         &:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(10, 101, 237, 0.5);
@@ -392,8 +390,7 @@ const LoginContainer = styled.div`
         align-items: center;
         width: 100%;
         max-width: 320px;
-        margin: 1.5rem 0;
-        
+        margin-bottom: 1rem;
         .line {
             flex: 1;
             height: 1px;
@@ -774,8 +771,6 @@ const LoginPage = () => {
                                     }
                                 </button>
                             </div>
-                            
-                            <a href="#" className="forgot-password">Forgot Password?</a>
                             
                             <button type="submit" className="login-btn" onClick={login_control}>
                                 Log In
