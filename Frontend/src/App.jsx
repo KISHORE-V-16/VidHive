@@ -3,7 +3,6 @@ import Dashboard from './Pages/Dashboard';
 import LoginPage from './Pages/LoginPage';
 import Room from  './Pages/Room';
 import SignUpPage from './Pages/SignUpPage';
-import NotFound from './Components/NotFound';
 import PrivateRoute from './Components/PrivateRoute';
 
 
@@ -18,7 +17,6 @@ function App() {
         <Route exact path='/common/:id' element={<PrivateRoute><Room/></PrivateRoute>}/>  
         <Route exact path='/LogIn' element={<LoginPage/>}/>
         <Route exact path='/SignUp' element={<SignUpPage/>}/>
-        <Route path="*" element={<NotFound/>}/>
       </Routes>
       </BrowserRouter>
   </div>
