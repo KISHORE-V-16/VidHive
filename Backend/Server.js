@@ -10,8 +10,14 @@ const authrouter = require('./Router/authrouter.js');
 connectDB();
 require('dotenv').config();
 
+
 app.use(cookieParser());
 app.use(bodyParser.json());
+
+app.get('/', (req,res)=>{
+        res.send('Hello from the server');
+    }
+);
 
 app.use(cors({ 
     origin: '*',
