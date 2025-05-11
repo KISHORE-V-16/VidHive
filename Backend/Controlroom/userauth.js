@@ -39,7 +39,7 @@ const loginUser = async (req, res) => {
     }
 };
 
-JWT_SCREAT=VFNSKVNKNVdjncjnwcjknjkcnwjkncKCDNKEV21423242U38498;
+JWT_SCREAT='VFNSKVNKNVdjncjnwcjknjkcnwjkncKCDNKEV21423242U38498%$#@%^#@@!!VMFKMKEVMKFEMKVcnkdenvkevnknvkenvkenvkenvknvkenvken';
 
 //create token
 const createToken = (id) => {
