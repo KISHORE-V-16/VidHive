@@ -622,7 +622,6 @@ const SignUpPage = () => {
                     toast.error(`${response.data.message}`,toastStyles);
                     setTimeout(()=>{
                       setformdata({username:"",password:"",email:""});
-                      setcheckstatus(false);
                     },1800);
                   }else{
                     
