@@ -39,9 +39,11 @@ const loginUser = async (req, res) => {
     }
 };
 
+JWT_SCREAT=VFNSKVNKNVdjncjnwcjknjkcnwjkncKCDNKEV21423242U38498;
+
 //create token
 const createToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign({ id }, JWT_SCREAT, { expiresIn: '1h' });
 };
 
 // Register User
