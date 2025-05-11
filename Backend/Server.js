@@ -13,6 +13,7 @@ require('dotenv').config();
 
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(express.json());
 
 app.get('/', (req,res)=>{
         res.send('Hello from the server');
