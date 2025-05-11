@@ -615,7 +615,7 @@ const SignUpPage = () => {
             
              if(checkemail && checkpwd && checkname){
                 console.log("all set");
-                const logincred = axios.post("http://localhost:5001/auth/register",formdata);
+                const logincred = axios.post("https://vid-hive-backendlatest.vercel.app/auth/register",formdata);
                 logincred.then((response)=>{
                   if(!response.data.success){
                     console.log(response.data.message);
