@@ -15,7 +15,6 @@ const Mymeetings = ({ setupSources }) => {
   const [meetdata, setmeetdata] = useState([]);
   const [docdata, setdocdata] = useState([]);
   const [userdata, setuserdata] = useState([]);
-  const [newindex, setnewindex] = useState('');
   const [mymeeting, setmymeeting] = useState(true);
 
   const combinedClassNames = classnames('edit-content-dsg', {
@@ -49,23 +48,20 @@ const Mymeetings = ({ setupSources }) => {
     const meetcollection__data = onSnapshot(meetcollections, (snapshot) => {
       const data = snapshot.docs.map(doc => ({
         "createduser": doc.data().createduser,
-        "Createdby": doc.data().CreatedBY,
         "meetid": doc.data().meetID,
-        "invitedusers": doc.data().invitedUsers,
-        "maxusers": doc.data().maxUsers,
-        "meetingdate": doc.data().meetingDate,
+        "createdemail": doc.data().createduseremail,
         "meetingname": doc.data().meetingName,
-        "meetingtype": doc.data().meetingType,
-        "status": doc.data().status,
         "id": doc.id,
       }));
-      setmeetdata(data);
+     setmeetdata(data.filter(item => item.createdemail === localStorage.getItem('email') && item.createduser === localStorage.getItem('username')));
     });
 
     return () => {
-      meetcollection__data();
+        meetcollection__data();
     }
   }, []);
+
+  
 
   useEffect(() => {
     const usercollection__data = onSnapshot(userscollections, (snapshot) => {
@@ -135,7 +131,7 @@ const Mymeetings = ({ setupSources }) => {
           <ScanLine />
         </BackgroundElements>
 
-        <MeetingsWrapper className={meetdata.length === 0 ? "empty-meetings" : ""}>
+        <MeetingsWrapper className={(meetdata && meetdata.length === 0) ? "empty-meetings" : ""}>
           <div className="meetings-content">
             <div className="meetings-header">
               <div className="header-item">Meeting Name</div>
@@ -146,7 +142,7 @@ const Mymeetings = ({ setupSources }) => {
             </div>
 
             <div className="meetings-list">
-              {meetdata.length > 0 ? (
+              {(meetdata && meetdata.length > 0) ? (
                 meetdata.map((data, index) => (
                   <div className="meeting-item" key={index}>
                     <div className="meeting-name">{data.meetingname}</div>
@@ -154,11 +150,6 @@ const Mymeetings = ({ setupSources }) => {
                     <div className="meeting-action">
                       <button
                         className="edit-button"
-                        disabled={data.status === "cancelled"}
-                        style={{
-                          color: data.status === "cancelled" ? "#888" : "#fff",
-                          opacity: data.status === "cancelled" ? 0.6 : 1
-                        }}
                         onClick={() => handleDeleteClick(data)}
                       >
                         <FaTrash />
@@ -173,7 +164,7 @@ const Mymeetings = ({ setupSources }) => {
                       </button>
                     </div>
                     <CopyToClipboard text={data.meetid}>
-                      <button className="copy-button">
+                      <button className="copy-button" onClick={() => toast.success("Meeting ID copied to clipboard", toaststyles)}>
                         <FaCopy />
                       </button>
                     </CopyToClipboard>

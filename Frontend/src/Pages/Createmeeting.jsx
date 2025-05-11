@@ -49,7 +49,6 @@ const Createmeeting = () => {
       const data = snapshot.docs.map(doc => ({
         emailid: doc.data().emailid,
         name1: doc.data().name,
-        uid: doc.data().uid,
       }));
       setuserdata(data);
     });
@@ -71,29 +70,61 @@ const Createmeeting = () => {
     });
       
     const getdata = collection(firestore1, 'Meetings');
-    const username = localStorage.getItem('username');
-    const userinfo = userdata.filter((val) => (val.name1 === username))[0];
-      
-    addDoc(getdata, {
-      "createduser": userinfo.name1,
-      "CreatedBY": userinfo.uid,
-      "meetID": callDocRef.id,
-      "meetingName": meetname
-    })
-      .then(res => {
-        setCallId(callDocRef.id);
-        toast.dark('Successfully Created The Meeting', toaststyles);
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
+    const useremail = localStorage.getItem('email');
+
+    if(localStorage.getItem('authMethod') === 'firebase') {
+
+      const userinfo = userdata.filter((val) => (val.emailid === useremail))[0];
+
+      addDoc(getdata, {
+        "createduser": userinfo.name1,
+        "createduseremail": userinfo.emailid, 
+        "meetID": callDocRef.id,
+        "meetingName": meetname
       })
-      .catch(error => {
-        toast.warn('Retry Again Or else Network Problem', toaststyles);
-        navigate('/common/create');
+        .then(res => {
+          setCallId(callDocRef.id);
+          toast.dark('Successfully Created The Meeting', toaststyles);
+          setTimeout(() => {
+            navigate('/');
+          }, 2000);
+        })
+        .catch(error => {
+          toast.warn('Retry Again Or else Network Problem', toaststyles);
+          navigate('/common/create');
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+
+    }
+    else{
+
+      const username = localStorage.getItem('username');
+
+      addDoc(getdata, {
+        "createduser": username,
+        "createduseremail": useremail, 
+        "meetID": callDocRef.id,
+        "meetingName": meetname
       })
-      .finally(() => {
-        setIsLoading(false);
-      });
+        .then(res => {
+          setCallId(callDocRef.id);
+          toast.dark('Successfully Created The Meeting', toaststyles);
+          setTimeout(() => {
+            navigate('/');
+          }, 2000);
+        })
+        .catch(error => {
+          toast.warn('Retry Again Or else Network Problem', toaststyles);
+          navigate('/common/create');
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+
+    }
+    
   };
 
   const submitformdata = () => {

@@ -635,8 +635,8 @@ const LoginPage = () => {
         signInWithPopup(fireAuth, provider)
             .then((results) => {
                 localStorage.setItem('username', results.user.displayName);
-                localStorage.setItem('emialids', results.user.email);
-                if (results.user.emailVerified) {
+                localStorage.setItem('email', results.user.email);
+                if (results.user.emailVerified){
                     toast.dark('Successfully Logged In', toastStyles);
                     flag = 0;
                 }
