@@ -10,7 +10,6 @@ const authrouter = require('./Router/authrouter.js');
 connectDB();
 require('dotenv').config();
 
-
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.json());
@@ -26,13 +25,9 @@ app.use(cors({
     optionsSuccessStatus: 200 // some legacy browsers choke on 204
   })); 
 
-
+app.use('/auth',authrouter);
 
 app.listen(PORT,()=>{
     console.log(`server is listening to the port ${PORT}`);
 })
-
-
-
-app.use('/auth',authrouter);
 

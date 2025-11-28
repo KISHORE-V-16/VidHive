@@ -25,6 +25,26 @@ const servers = {
                 "stun:stun2.l.google.com:19302",
             ],
         },
+        {
+            urls: "turn:global.relay.metered.ca:80",
+            username: "b42090882f4cc5ea720b9df0",
+            credential: "PqieF4GLpXMv/XkW",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+            username: "b42090882f4cc5ea720b9df0",
+            credential: "PqieF4GLpXMv/XkW",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:443",
+            username: "b42090882f4cc5ea720b9df0",
+            credential: "PqieF4GLpXMv/XkW",
+          },
+          {
+            urls: "turns:global.relay.metered.ca:443?transport=tcp",
+            username: "b42090882f4cc5ea720b9df0",
+            credential: "PqieF4GLpXMv/XkW",
+          },
     ],
     iceCandidatePoolSize: 10,
 };
@@ -309,7 +329,7 @@ const Room = () => {
         };
 
         if (mode === "create") {
-
+            
             console.log("created the offer");
 
             const callDocRef = docdata.filter((check) => check.meetid === id)[0].documentref[0];
@@ -433,41 +453,79 @@ const Room = () => {
             }
         }, [3000]);
 
+        // const checkRemoteStream = setInterval(() => {
+        //     if (remoteStream.active) {
+        //         clearInterval(checkRemoteStream); // Stop checking once remoteStream is active
+        //         setisremote(true);
+
+        //         const simple = setInterval(() => {
+        //             if (remoteStream.active && remoteRef.current) {
+        //                 setisremote(true);
+        //                 clearInterval(simple);
+        //                 setremstream(remoteStream);
+        //                 remoteRef.current.srcObject = remoteStream;
+        //                 remop = remoteStream;
+
+        //                 const check = setInterval(() => {
+
+        //                     if (!remoteStream.active) {
+        //                         clearInterval(check);
+        //                         setTimeout(() => {
+        //                             toast.dark('Successfully Logged out from meet', toaststyles);
+        //                         }, 1000);
+        //                         navigator1('/');
+        //                     }
+
+        //                 }, 1000);
+
+        //             }
+
+        //         }, 500);
+
+        //     }
+        // }, 500); // Check every 500ms
+
+        // pc.onconnectionstatechange = () => {
+        //     if (pc.connectionState === "disconnected") {
+        //         hangUp();
+        //     }
+        // };
+
+        // Wait for remote stream to become active, then attach it to the video element
         const checkRemoteStream = setInterval(() => {
             if (remoteStream.active) {
-                clearInterval(checkRemoteStream); // Stop checking once remoteStream is active
+                clearInterval(checkRemoteStream); // Stop checking once connected
                 setisremote(true);
 
+                // Ensure the video element is ready and attach the stream
                 const simple = setInterval(() => {
                     if (remoteStream.active && remoteRef.current) {
                         setisremote(true);
                         clearInterval(simple);
+                        
                         setremstream(remoteStream);
                         remoteRef.current.srcObject = remoteStream;
                         remop = remoteStream;
 
-                        const check = setInterval(() => {
-
-                            if (!remoteStream.active) {
-                                clearInterval(check);
-                                setTimeout(() => {
-                                    toast.dark('Successfully Logged out from meet', toaststyles);
-                                }, 1000);
-                                navigator1('/');
-                            }
-
-                        }, 1000);
-
                     }
-
                 }, 500);
-
             }
-        }, 500); // Check every 500ms
+        }, 500); 
 
+        // Update your connection state handler to handle disconnects properly
         pc.onconnectionstatechange = () => {
-            if (pc.connectionState === "disconnected") {
+            console.log("Connection State:", pc.connectionState);
+            
+            if (pc.connectionState === "failed" || pc.connectionState === "closed") {
+                // Only kick the user out if the connection is definitively dead
+                toast.error("Connection lost. Leaving room...", toaststyles);
                 hangUp();
+                setTimeout(() => {
+                    navigator1('/');
+                }, 2000);
+            } else if (pc.connectionState === "disconnected") {
+                // Just warn the user if it's a temporary disconnect (e.g. network blip)
+                toast.warn("Connection unstable... attempting to reconnect", toaststyles);
             }
         };
     };
