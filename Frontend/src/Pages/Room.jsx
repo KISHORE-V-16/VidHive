@@ -174,7 +174,7 @@ const Room = () => {
     const startEmotionDetection = () => {
         if (!emotionDetectionOn) {
             setEmotionDetectionOn(true);
-            detectionInterval.current = setInterval(detectEmotions, 5000); // Run every 5 seconds
+            detectionInterval.current = setInterval(detectEmotions, 15000); // Run every 5 seconds
             toast.dark('Emotion detection is ON', toaststyles);
         }
     };
@@ -295,7 +295,8 @@ const Room = () => {
 
     const documnet1 = collection(firestore1, 'docref');
 
-    onSnapshot(documnet1, (snapshot) => {
+    useEffect(() => {
+         onSnapshot(documnet1, (snapshot) => {
 
         const data = snapshot.docs.map(doc => ({
             documentref: doc.data().docu1,
@@ -306,6 +307,7 @@ const Room = () => {
         setdocdata(data);
 
     });
+    }, []);
 
     const setupSources = async (mode, id) => {
 
